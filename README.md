@@ -3,7 +3,7 @@
 ## Inhaltsverzeichnis
 
 1.  **Einleitung**
-    
+
 2.  **Funktionen**
     
 3.  **Systemanforderungen**
@@ -71,19 +71,19 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
 
 ## 4. Installation
 
-### 4.1 Repository klonen
+- 4.1 Repository klonen
 
-### 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen)
+- 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen)
 
-### 4.3 Benötigte Pakete installieren
+- 4.3 Benötigte Pakete installieren
 
-### 4.4 Tesseract OCR installieren
+- 4.4 Tesseract OCR installieren
 
 ## 5. Nutzung
 
 Das Skript mit der PDF-Datei als Argument ausführen:
 
-Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält denselben Namen wie die Eingabe-PDF, jedoch mit der Endung .md.
+- Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält denselben Namen wie die Eingabe-PDF, jedoch mit der Endung .md.
 
 ## 6. Leistung und Genauigkeit
 
