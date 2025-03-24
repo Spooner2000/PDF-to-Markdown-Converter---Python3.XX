@@ -66,7 +66,11 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
 
 ## 4. Installation
 
-- 4.1 Repository klonen
+- 4.1 Repository klonen:
+
+    ```
+    git clone https://gitlab.com/Spooner2000pdf-to-markdown-converter-python3.xx.git
+    ```
 
 - 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen)
 
