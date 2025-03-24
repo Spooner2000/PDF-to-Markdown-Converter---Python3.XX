@@ -9,8 +9,20 @@
 3.  **Systemanforderungen**
     
 4.  **Installation**
+
+5.  **Nutzung**
+
+5.  **Hinweis**
     
-5.  **Lizenz**
+6.  **Leistung und Genauigkeit**
+
+7.  **Einschränkungen**
+
+8.  **Verwendung in nachgelagerten Aufgaben**
+
+9.  **Mitwirkung**
+
+10.  **Lizenz**
 
 ## 1. Beschreibung
 
