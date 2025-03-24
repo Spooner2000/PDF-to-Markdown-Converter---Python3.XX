@@ -53,13 +53,15 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
 *   **Benötigte Python-Bibliotheken:**
     ```
     PyMuPDF
+    tk
+    PyQt5
+    opencv-python-headless
     pdfplumber
     pytesseract
-    OpenCV (cv2)
-    numpy
-    pillow
+    opencv-python
     transformers
     torch
+    Pillow
     ```
 
 ## 4. Installation
