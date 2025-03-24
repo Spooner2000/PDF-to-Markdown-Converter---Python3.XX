@@ -72,11 +72,43 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
     git clone https://gitlab.com/Spooner2000pdf-to-markdown-converter-python3.xx.git
     ```
 
-- 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen)
+- 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen) mit python
+    ```
+    python -m venv venv
+    source venv/bin/activate
 
-- 4.3 Benötigte Pakete installieren
+    (Letzte Version von Python-PIP installieren)
+    python -m pip install --upgrade pip
+    ```
 
-- 4.4 Tesseract OCR installieren
+    oder mit python3
+
+    ```
+    python3 -m venv venv
+    source venv/bin/activate
+
+    (Letzte Version von Python-PIP installieren)
+    python3 -m pip install --upgrade pip
+    ```
+
+- 4.3 Benötigte Pakete installieren mit python
+     ```
+    python setup.py
+    ```
+
+    oder mit python3
+
+    ```
+    python3 setup.py
+    ```
+
+- 4.4 Tesseract OCR installieren(manuel falls nicht automatisch installiert)
+
+    ```
+    sudo apt-get install tesseract-ocr tesseract-ocr-deu 
+    ```
+
+    Für Windows: [Windows Tesseract](https://github.com/UB-Mannheim/tesseract/wiki)
 
 ## 5. Nutzung
 
