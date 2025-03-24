@@ -4,15 +4,27 @@ import sys
 import subprocess
 import builtins
 import contextlib
-import io
+import logging
 import traceback
+
+# ---------------------------
+# Logging konfigurieren
+# ---------------------------
+logging.basicConfig(
+    filename="installer.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
+def log(msg):
+    print(msg)
+    logging.info(msg)
 
 # ---------------------------
 # Hilfsfunktion: Konsolenausgabe unterdrücken
 # ---------------------------
 @contextlib.contextmanager
 def suppress_stdout():
-    """Unterdrückt temporär die Standardausgabe."""
     with open(os.devnull, "w") as devnull:
         old_stdout = sys.stdout
         sys.stdout = devnull
@@ -25,125 +37,88 @@ def suppress_stdout():
 # Hilfsfunktion: Paketinstallation
 # ---------------------------
 def install_package(package):
-    """Versucht ein Paket über mehrere Wege zu installieren."""
-    commands = [
-        [sys.executable, "-m", "pip", "install", package],
-        ["pip", "install", package],
-        ["pip3", "install", package]
-    ]
-    
+    commands = [[sys.executable, "-m", "pip", "install", package]]
     for cmd in commands:
         try:
-            # Ausgabe der Installation unterdrücken
             result = subprocess.run(cmd, capture_output=True, text=True)
             if result.returncode == 0:
-                if "Requirement already satisfied" in result.stdout:
-                    print(f"Paket {package} ist bereits installiert.")
-                else:
-                    print(f"Paket {package} wurde erfolgreich installiert.")
+                log(f"Paket {package} wurde erfolgreich installiert.")
                 return True
-        except Exception:
-            continue
-    
-    print(f"Fehler: {package} konnte nicht installiert werden.")
+        except Exception as e:
+            logging.error(f"Fehler bei der Installation von {package}: {e}")
+    log(f"Fehler: {package} konnte nicht installiert werden.")
     return False
 
 # ---------------------------
 # Funktion: Installation aller Pakete aus requirements.txt
 # ---------------------------
 def install_requirements():
-    """Liest requirements.txt, prüft die Existenz jedes Pakets und installiert es ggf."""
     if not os.path.exists("requirements.txt"):
-        print("Fehler: requirements.txt wurde nicht gefunden.")
+        log("Fehler: requirements.txt wurde nicht gefunden.")
         sys.exit(1)
     
     with open("requirements.txt", "r") as req_file:
-        lines = req_file.readlines()
+        packages = [line.strip() for line in req_file if line.strip() and not line.startswith("#")]
     
-    # Filtere leere Zeilen und Kommentare
-    packages = [line.strip() for line in lines if line.strip() and not line.startswith("#")]
-    
-    print(f"Prüfe {len(packages)} Pakete aus requirements.txt...")
+    log(f"Prüfe {len(packages)} Pakete aus requirements.txt...")
     
     for package in packages:
-        # Extrahiere den Paketnamen (bei Versionsangaben z. B. "numpy==1.21.0")
         pkg_name = package.split("==")[0].strip()
         try:
-            # Versuche Import ohne Ausgabe
             with suppress_stdout():
                 __import__(pkg_name)
-            print(f"{pkg_name} ist bereits installiert.")
+            log(f"{pkg_name} ist bereits installiert.")
         except ImportError:
-            print(f"{pkg_name} wird installiert...")
-            if not install_package(package):
-                print(f"Fehler: {package} konnte nicht installiert werden.")
+            log(f"{pkg_name} wird installiert...")
+            install_package(package)
 
 # ---------------------------
-# Custom Import-Hook: Installiert fehlende Module während der Laufzeit
+# Custom Import-Hook
 # ---------------------------
 real_import = builtins.__import__
+imported_packages = set()
 
 def custom_import(name, globals=None, locals=None, fromlist=(), level=0):
-    """Erweiterte __import__, die bei einem ImportError automatisch versucht, das Modul zu installieren."""
-    try:
+    if name in imported_packages:
         return real_import(name, globals, locals, fromlist, level)
+    
+    try:
+        module = real_import(name, globals, locals, fromlist, level)
+        imported_packages.add(name)
+        return module
     except ImportError:
-        # Prüfe, ob es sich um ein Windows-spezifisches Modul handelt
-        windows_modules = ['_winapi', 'msvcrt', 'nt']
-        if name in windows_modules and sys.platform != 'win32':
-            print(f"Modul '{name}' ist nur unter Windows verfügbar und wird übersprungen.")
-            raise
-        
-        # Falls es sich um ein Untermodul handelt, versuche das Hauptmodul zu installieren
-        if '.' in name:
-            main_module = name.split('.')[0]
-            package_name = main_module
-        else:
-            package_name = name
-        
-        # Bekannte Mappings (z. B. "fitz" wird zu "PyMuPDF")
-        known_mappings = {
-            "fitz": "PyMuPDF",
-            # Weitere Mappings hier hinzufügen, falls nötig
-        }
-        
-        package_name = known_mappings.get(package_name, package_name)
-        print(f"Modul '{name}' nicht gefunden. Versuche, '{package_name}' zu installieren...")
-        
-        if install_package(package_name):
+        log(f"Modul '{name}' nicht gefunden. Versuche, es zu installieren...")
+        if install_package(name):
             return real_import(name, globals, locals, fromlist, level)
-        else:
-            print(f"Automatische Installation von '{package_name}' fehlgeschlagen.")
-            raise
+        log(f"Installation von '{name}' fehlgeschlagen.")
+        raise
 
-# Überschreibe die eingebaute __import__ Funktion
 builtins.__import__ = custom_import
 
 # ---------------------------
-# Main-Bereich: Installation und Start der Anwendung
+# Main-Bereich
 # ---------------------------
 if __name__ == "__main__":
-    print("Installiere alle Pakete aus requirements.txt...")
+    log("Installiere alle Pakete aus requirements.txt...")
     install_requirements()
-    print("Alle Abhängigkeiten wurden überprüft.")
+    log("Alle Abhängigkeiten wurden überprüft.")
     
-    # Hier können weitere systembezogene Schritte ergänzt werden.
-    # Beispiel: Systempakete (Ubuntu) installieren, falls notwendig:
     if sys.platform.startswith("linux"):
-        try:
-            subprocess.run(["sudo", "apt-get", "update"], check=True)
-            subprocess.run(["sudo", "apt-get", "install", "-y", "libxcb-xinerama0"], check=True)
-            print("Systempaket libxcb-xinerama0 wurde installiert oder ist bereits vorhanden.")
-        except Exception as e:
-            print(f"Warnung: Konnte libxcb-xinerama0 nicht installieren: {e}")
+        if os.geteuid() != 0:
+            log("Warnung: Systempakete erfordern Root-Rechte.")
+        else:
+            try:
+                subprocess.run(["apt-get", "update"], check=True)
+                subprocess.run(["apt-get", "install", "-y", "libxcb-xinerama0"], check=True)
+                log("Systempaket libxcb-xinerama0 installiert.")
+            except Exception as e:
+                log(f"Fehler bei der Installation von Systempaketen: {e}")
     
-    # Starte die Hauptanwendung
-    # Hier wird angenommen, dass dein Hauptmodul "main.py" mit einer main()-Funktion vorhanden ist.
     try:
         from main import main
         main()
     except ImportError:
-        print("Hauptmodul 'main' konnte nicht importiert werden.")
+        log("Hauptmodul 'main' konnte nicht importiert werden.")
     except Exception as e:
-        print(f"Fehler beim Starten der Hauptanwendung: {e}")
+        log(f"Fehler beim Starten der Anwendung: {e}")
         traceback.print_exc()
