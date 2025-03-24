@@ -1,23 +1,77 @@
 # PDF to Markdown Converter - Python3.XX
 
+## Inhaltsverzeichnis
 
+- [Zielsetzung](#zielsetzung)
+- [Funktionen](#funktionen)
+- [Anforderungen](#anforderungen)
+- [Installation](#installation)
+- [Verwendung](#verwendung)
+- [Leistung und Genauigkeit](#leistung-und-genauigkeit)
+- [Einschränkungen](#einschränkungen)
+- [Verwendung in downstream Aufgaben](#verwendung-in-downstream-aufgaben)
+- [Beitragen](#beitragen)
+- [Lizenz](#lizenz)
 
-## Getting started
+## Zielsetzung
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Dieses Projekt zielt darauf ab, Inhalte aus PDF-Dateien in das Markdown-Format zu extrahieren. Es ist besonders für downstream Aufgaben wie **Retrieval Augmented Generation (RAG)** und andere NLP-Aufgaben geeignet. Das Skript bewahrt verschiedene Markdown-Elemente wie Tabellen, Bilder, Links, fett und kursiv formatierte Texte, Blockzitate, Code-Blöcke und andere Markdown-spezifische Syntax. Die Extraktion erfolgt mithilfe von Python-Bibliotheken wie **PyMuPDF (fitz)**, **pdfplumber**, **pytesseract** und weiteren.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Funktionen
 
-## Add your files
+- Extrahiert Text, Bilder, Tabellen und Code-Blöcke aus PDF-Dateien
+- Konvertiert PDF-Inhalte in das optimierte Markdown-Format für RAG und andere NLP-Aufgaben
+- Bewahrt Formatierungen wie fett, kursiv, Tabellen, Bilder, Links, Listen und Code-Blöcke
+- Verarbeitet komplexe Layouts, einschließlich mehrspaltigem Text
+- Führt OCR auf Bildern durch, um Text zu extrahieren
+- Generiert Bildunterschriften mit einem vortrainierten Modell
+- Gibt sauberen, strukturierten Markdown-Code aus, der für Informationsabruf und Textgenerierungsaufgaben geeignet ist
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Anforderungen
+
+- Python 3.11+
+- **PyMuPDF (fitz)**
+- **pdfplumber**
+- **pytesseract**
+- **OpenCV (cv2)**
+- **numpy**
+- **Pillow (PIL)**
+- **transformers**
+- **torch**
+
+## Installation
+
+1. **Repository klonen:**
+
+   ```bash
+   git clone https://github.com/iamarunbrahma/pdf-to-markdown.git
+   cd pdf-to-markdown
+
+## Wie starte ich?
+
+Um es einfach zu gestalten, muss das Repo nur heruntergeladen werden und dann ausgeführt werden. Alle Abhängigkeiten werden automatisch installiert.
+
+## Benötigte Tools und Bibliotheken
+
+1. Python-Bibliotheken:
+PyMuPDF (auch bekannt als fitz): Zum Extrahieren von Text aus einer PDF-Datei.
+
+    - markdown: Zum Erzeugen des Markdown-Formats aus dem extrahierten Text.
+
+2. Installation der Bibliotheken:
+Öffnen Sie ein Terminal und installieren Sie die erforderlichen Python-Bibliotheken mit pip:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/Spooner2000/pdf-to-markdown-converter-python3.xx.git
-git branch -M main
-git push -uf origin main
+pip install PyMuPDF markdown
+```
+
+3. Optional – Installation von pandoc (wenn Sie erweiterten Markdown-Support wünschen):
+pandoc ist ein vielseitiger Konverter, der zwischen verschiedenen Dokumentformaten umwandeln kann, einschließlich PDF zu Markdown. Es wird möglicherweise nicht direkt zum Extrahieren von Text benötigt, aber es kann hilfreich sein, falls Sie weitergehende Funktionen benötigen.
+
+Installieren Sie es unter Ubuntu mit:
+
+```
+sudo apt-get install pandoc
 ```
 
 ## Integrate with your tools
