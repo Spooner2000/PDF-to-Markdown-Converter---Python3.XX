@@ -24,12 +24,10 @@
     
 
 ## 1. Einleitung
---------------
 
 Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-Dateien. Es wurde speziell für nachgelagerte Aufgaben wie Retrieval Augmented Generation (RAG) entwickelt. Die Umwandlung bewahrt verschiedene Markdown-Elemente wie Tabellen, Bilder, Links, Fett- und Kursivtext, Blockzitate und Codeblöcke. Die Umsetzung erfolgt mit Python-Bibliotheken wie PyMuPDF (fitz), pdfplumber, pytesseract und anderen.
 
 ## 2. Funktionen
---------------
 
 *   Extrahiert Text, Bilder, Tabellen und Codeblöcke aus PDFs
     
@@ -47,7 +45,6 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
     
 
 ## 3. Systemanforderungen
------------------------
 
 *   **Betriebssystem:** Ubuntu 20.04 oder neuer
     
@@ -73,7 +70,6 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
         
 
 ## 4. Installation
-----------------
 
 ### 4.1 Repository klonen
 
@@ -84,14 +80,12 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
 ### 4.4 Tesseract OCR installieren
 
 ## 5. Nutzung
------------
 
 Das Skript mit der PDF-Datei als Argument ausführen:
 
 Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält denselben Namen wie die Eingabe-PDF, jedoch mit der Endung .md.
 
 ## 6. Leistung und Genauigkeit
-----------------------------
 
 *   **Genauigkeit:** Hohe Präzision bei der Bewahrung der Dokumentstruktur. Gut geeignet für Texte, Tabellen, Bilder, Links und Codeblöcke. Sehr komplexe Layouts können eine manuelle Nachbearbeitung erfordern.
     
@@ -101,7 +95,6 @@ Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält den
     
 
 ## 7. Einschränkungen
--------------------
 
 *   Nur für die Konvertierung von PDFs in Markdown vorgesehen.
     
@@ -113,7 +106,6 @@ Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält den
     
 
 ## 8. Verwendung in nachgelagerten Aufgaben
------------------------------------------
 
 Die generierte Markdown-Datei eignet sich besonders für:
 
@@ -125,11 +117,9 @@ Die generierte Markdown-Datei eignet sich besonders für:
     
 
 ## 9. Mitwirkung
---------------
 
 Beiträge zur Verbesserung der Genauigkeit, Geschwindigkeit oder Funktionalität sind willkommen. Vorschläge und Pull Requests können im GitHub-Repository eingereicht werden.
 
 ## 10. Lizenz
------------
 
 Dieses Projekt steht unter der MIT-Lizenz. Details befinden sich in der LICENSE-Datei.
