@@ -2,25 +2,16 @@
 
 ## Inhaltsverzeichnis
 
-1.  **Einleitung**
+1.  **Einleitung** [Einleitung](## Einleitung)
 
-2.  **Funktionen**
+2.  **Beschreibung**
     
 3.  **Systemanforderungen**
     
 4.  **Installation**
     
-5.  **Nutzung**
     
-6.  **Leistung und Genauigkeit**
-    
-7.  **Einschränkungen**
-    
-8.  **Verwendung in nachgelagerten Aufgaben**
-    
-9.  **Mitwirkung**
-    
-10.  **Lizenz**
+5.  **Lizenz**
     
 
 ## 1. Einleitung

@@ -1,8 +1,10 @@
 PyMuPDF
+tk
+PyQt5
+opencv-python-headless
 pdfplumber
 pytesseract
 opencv-python
-numpy
 transformers
 torch
 Pillow
