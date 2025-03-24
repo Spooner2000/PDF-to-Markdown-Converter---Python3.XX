@@ -48,26 +48,19 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
 
 *   **Betriebssystem:** Ubuntu 20.04 oder neuer
     
-*   **Python-Version:** 3.8 oder höher
+*   **Python-Version:** 3.8 oder höher | Aktuell Verwendet 3.12
     
 *   **Benötigte Python-Bibliotheken:**
-    
-    *   PyMuPDF (fitz)
-        
-    *   pdfplumber
-        
-    *   pytesseract
-        
-    *   OpenCV (cv2)
-        
-    *   numpy
-        
-    *   Pillow (PIL)
-        
-    *   transformers
-        
-    *   torch
-        
+    ```
+    PyMuPDF
+    pdfplumber
+    pytesseract
+    OpenCV (cv2)
+    numpy
+    pillow
+    transformers
+    torch
+    ```
 
 ## 4. Installation
 
