@@ -2,19 +2,17 @@
 
 ## Inhaltsverzeichnis
 
-1.  **Einleitung** [Einleitung](## Einleitung)
+1.  **Beschreibung**
 
-2.  **Beschreibung**
+2.  **Funktionen**
     
 3.  **Systemanforderungen**
     
 4.  **Installation**
     
-    
 5.  **Lizenz**
-    
 
-## 1. Einleitung
+## 1. Beschreibung
 
 Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-Dateien. Es wurde speziell für nachgelagerte Aufgaben wie Retrieval Augmented Generation (RAG) entwickelt. Die Umwandlung bewahrt verschiedene Markdown-Elemente wie Tabellen, Bilder, Links, Fett- und Kursivtext, Blockzitate und Codeblöcke. Die Umsetzung erfolgt mit Python-Bibliotheken wie PyMuPDF (fitz), pdfplumber, pytesseract und anderen.
 
@@ -60,20 +58,38 @@ Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-D
 - 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen)
 
 - 4.3 Benötigte Pakete installieren
+    - Starte das Setup welches alle Abhängigkeiten installiert um das Tool zu starten.
 
 - 4.4 Tesseract OCR installieren
 
 ## 5. Nutzung
 
-Das Skript mit der PDF-Datei als Argument ausführen:
+Das Skript kann nach dem ersten mal ausführen immer mit folgendem befehl ausgeführt werden:
 
-- Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält denselben Namen wie die Eingabe-PDF, jedoch mit der Endung .md.
+```
+python app.py
+```
+
+oder mit 
+
+```
+python3 app.py
+```
+
+- Das extrahierte Markdown wird in **"/Documents/PDF-Markdown_Output"** gespeichert und erhält denselben Namen wie die Eingabe-PDF, jedoch mit der Endung .md.
+
+## Hinweis
+Die Abhängigkeiten werden installiert um das Tool starten zu können, jedoch wird ein Model beim ersten mal Konvertieren einer datei, im hintergrund heruntergeladen und verwendet, wodurch die Wartezeit bis zum ersten umgewandelten Dokument etwas länger dauern kann **(ca. 2-5 min)**.
+
+- **Bei längeren Wartezeiten, beenden und das Tool nochmals starten!**
 
 ## 6. Leistung und Genauigkeit
 
 *   **Genauigkeit:** Hohe Präzision bei der Bewahrung der Dokumentstruktur. Gut geeignet für Texte, Tabellen, Bilder, Links und Codeblöcke. Sehr komplexe Layouts können eine manuelle Nachbearbeitung erfordern.
     
-*   **Geschwindigkeit:** Die Verarbeitungszeit hängt von der PDF-Größe und -Komplexität ab. Ein 10-seitiges PDF mit gemischten Inhalten benötigt in der Regel 30-60 Sekunden.
+*   **Geschwindigkeit:** Die Verarbeitungszeit hängt von der PDF-Größe und -Komplexität ab. 
+    - Ein 10-seitiges PDF mit gemischten Inhalten benötigt in der Regel 10-30 Sekunden.
+    - Ein 30-seitiges **(oder mehr)** PDF mit gemischten Inhalten benötigt in der Regel 30-120 Sekunden.
     
 *   **Optimierung für RAG:** Klare Trennung zwischen Abschnitten und Inhaltstypen, um einfache Verarbeitung für RAG-Systeme zu ermöglichen.
     
