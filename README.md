@@ -1,156 +1,91 @@
-# PDF zu Markdown Konverter - Detaillierte Anleitung für Linux/Ubuntu
+# Admin Automation Dashboard Pro
 
-## Inhaltsverzeichnis
+Umfangreiches Referenzprojekt für ein modular erweiterbares Administrations-Dashboard mit FastAPI-Backend und Electron/React-Frontend. Die Anwendung orientiert sich an der Ausschreibung "Admin Automation Dashboard Pro" und liefert eine vollständig lauffähige Grundlage inklusive Echtzeit-Streaming, RBAC, Demo-Daten und einer modernen UI.
 
-1.  **Einleitung**
+## Projektüberblick
 
-2.  **Funktionen**
-    
-3.  **Systemanforderungen**
-    
-4.  **Installation**
-    
-5.  **Nutzung**
-    
-6.  **Leistung und Genauigkeit**
-    
-7.  **Einschränkungen**
-    
-8.  **Verwendung in nachgelagerten Aufgaben**
-    
-9.  **Mitwirkung**
-    
-10.  **Lizenz**
-    
+* **Backend:** FastAPI 0.111 mit In-Memory-Datenhaltung, Event-Bus, RBAC (Rollen `administrator`, `operator`, `developer`, `viewer`), WebSocket-Streaming und Hintergrund-Telemetrie.
+* **Frontend:** Electron-Shell mit Vite + React, Mantine UI-Bibliothek, Zustand-Store, Echtzeit-Updates über WebSocket und Dashboard-Widgets.
+* **Funktionalität:**
+  * CRUD-Endpunkte für Routinen, Skripte, Geräte, API-Definitionen, HTTP-Server und virtuelle Umgebungen.
+  * Authentifizierung via Token, Benutzerverwaltung und Sitzungsübersicht.
+  * Dashboard-Zusammenfassung mit Kennzahlen, Logs, Benachrichtigungen und Live-Event-Stream.
+  * Telemetrie-Worker, der Metriken, Logs und Notifications simuliert.
 
-## 1. Einleitung
+## Verzeichnisstruktur
 
-Dieses Projekt dient der Extraktion von Markdown-formatierten Inhalten aus PDF-Dateien. Es wurde speziell für nachgelagerte Aufgaben wie Retrieval Augmented Generation (RAG) entwickelt. Die Umwandlung bewahrt verschiedene Markdown-Elemente wie Tabellen, Bilder, Links, Fett- und Kursivtext, Blockzitate und Codeblöcke. Die Umsetzung erfolgt mit Python-Bibliotheken wie PyMuPDF (fitz), pdfplumber, pytesseract und anderen.
+```
+.
+├── backend
+│   ├── app
+│   │   ├── api            # API-Router (v1)
+│   │   ├── schemas        # Pydantic-Modelle
+│   │   ├── services       # Hintergrunddienste (Telemetry)
+│   │   ├── utils          # Helfer (IDs, Datumsfunktionen)
+│   │   ├── auth.py        # Authentifizierungs- und RBAC-Layer
+│   │   ├── config.py      # Settings via pydantic-settings
+│   │   ├── events.py      # Async EventBus
+│   │   ├── lifecycle.py   # Startup/Shutdown Hooks
+│   │   ├── main.py        # FastAPI Factory
+│   │   ├── state.py       # AppState mit CRUD-Hilfen
+│   │   └── storage.py     # Thread-sichere In-Memory Stores
+│   └── app/tests          # Pytest-Smoketest für das Backend
+├── docs
+│   └── admin-automation-dashboard-pro.md  # Ausschreibungsdokument
+├── frontend
+│   ├── electron           # Electron Main/Preload-Skripte
+│   ├── src
+│   │   ├── components     # React-Komponenten (Header, Dashboard, Sidebar, Login)
+│   │   ├── hooks          # WebSocket Hook
+│   │   ├── services       # API-Client
+│   │   ├── store          # Zustand Stores
+│   │   ├── types          # Gemeinsame TS-Typen/Globals
+│   │   ├── App.tsx        # App-Shell & Routing der Views
+│   │   └── main.tsx       # Einstiegspunkt
+│   ├── package.json       # npm-Konfiguration
+│   └── vite.config.ts     # Vite-Konfiguration
+├── requirements.txt       # Python-Abhängigkeiten
+└── README.md
+```
 
-## 2. Funktionen
+## Backend starten
 
-*   Extrahiert Text, Bilder, Tabellen und Codeblöcke aus PDFs
-    
-*   Konvertiert PDF-Inhalte in Markdown-Format, optimiert für RAG und NLP-Aufgaben
-    
-*   Bewahrt Formatierungen wie Fett/Kursiv, Tabellen, Bilder, Links, Listen und Codeblöcke
-    
-*   Handhabt komplexe Layouts inklusive mehrspaltigem Text
-    
-*   Führt OCR auf Bildern durch, um Text zu extrahieren
-    
-*   Generiert Bildunterschriften mit einem vortrainierten Modell
-    
-*   Gibt sauberes, strukturiertes Markdown für Information Retrieval und Textgenerierung aus
-    
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn backend.app.main:app --reload
+```
 
-## 3. Systemanforderungen
+* Standard-Port: `http://localhost:8000`
+* WebSocket: `ws://localhost:8000/ws/events`
+* Demo-Zugangsdaten:
+  * `admin` / `admin123`
+  * `operator` / `operator123`
+  * `developer` / `dev123`
+  * `viewer` / `viewer123`
 
-*   **Betriebssystem:** Ubuntu 20.04 oder neuer
-    
-*   **Python-Version:** 3.8 oder höher | Aktuell Verwendet 3.12
-    
-*   **Benötigte Python-Bibliotheken:**
-    ```
-    PyMuPDF
-    tk
-    PyQt5
-    opencv-python-headless
-    pdfplumber
-    pytesseract
-    opencv-python
-    transformers
-    torch
-    Pillow
-    ```
+## Frontend entwickeln
 
-## 4. Installation
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-- 4.1 Repository klonen:
+Der Befehl startet Vite (Port 5173) und Electron parallel. Über `BACKEND_URL` kann ein anderer Backend-Endpunkt gesetzt werden (z. B. `BACKEND_URL=http://localhost:8001 npm run dev`).
 
-    ```
-    git clone https://gitlab.com/Spooner2000pdf-to-markdown-converter-python3.xx.git
-    ```
+## Tests
 
-- 4.2 Virtuelle Umgebung erstellen (optional, aber empfohlen) mit python
-    ```
-    python -m venv venv
-    source venv/bin/activate
+* Backend: `pytest`
+* Syntax-Check: `python -m compileall backend`
+* Frontend: `npm run lint`
 
-    (Letzte Version von Python-PIP installieren)
-    python -m pip install --upgrade pip
-    ```
+## Erweiterungsideen
 
-    oder mit python3
+* Persistente Datenbank (z. B. PostgreSQL) statt In-Memory-Stores.
+* Asynchrones Worker-System für Routine-Ausführung (Celery, Dramatiq).
+* Vollständige Umsetzung der Geräte-Kommunikation, API-Proxys oder HTTP-Server-Deployments.
+* Deployment-Skripte (Docker Compose) für ein reproduzierbares Setup.
 
-    ```
-    python3 -m venv venv
-    source venv/bin/activate
-
-    (Letzte Version von Python-PIP installieren)
-    python3 -m pip install --upgrade pip
-    ```
-
-- 4.3 Benötigte Pakete installieren mit python
-     ```
-    python setup.py
-    ```
-
-    oder mit python3
-
-    ```
-    python3 setup.py
-    ```
-
-- 4.4 Tesseract OCR installieren(manuel falls nicht automatisch installiert)
-
-    ```
-    sudo apt-get install tesseract-ocr tesseract-ocr-deu 
-    ```
-
-    Für Windows: [Windows Tesseract](https://github.com/UB-Mannheim/tesseract/wiki)
-
-## 5. Nutzung
-
-Das Skript mit der PDF-Datei als Argument ausführen:
-
-- Das extrahierte Markdown wird im outputs-Verzeichnis gespeichert und erhält denselben Namen wie die Eingabe-PDF, jedoch mit der Endung .md.
-
-## 6. Leistung und Genauigkeit
-
-*   **Genauigkeit:** Hohe Präzision bei der Bewahrung der Dokumentstruktur. Gut geeignet für Texte, Tabellen, Bilder, Links und Codeblöcke. Sehr komplexe Layouts können eine manuelle Nachbearbeitung erfordern.
-    
-*   **Geschwindigkeit:** Die Verarbeitungszeit hängt von der PDF-Größe und -Komplexität ab. Ein 10-seitiges PDF mit gemischten Inhalten benötigt in der Regel 30-60 Sekunden.
-    
-*   **Optimierung für RAG:** Klare Trennung zwischen Abschnitten und Inhaltstypen, um einfache Verarbeitung für RAG-Systeme zu ermöglichen.
-    
-
-## 7. Einschränkungen
-
-*   Nur für die Konvertierung von PDFs in Markdown vorgesehen.
-    
-*   Sehr große PDFs (100+ Seiten) können längere Verarbeitungszeiten benötigen.
-    
-*   Komplexe mathematische Formeln oder spezielle Symbole werden nicht immer perfekt konvertiert.
-    
-*   Gescannte PDFs ohne eingebetteten Text sind auf OCR angewiesen, das nicht 100% exakt sein kann.
-    
-
-## 8. Verwendung in nachgelagerten Aufgaben
-
-Die generierte Markdown-Datei eignet sich besonders für:
-
-*   **Retrieval Augmented Generation (RAG):** Ermöglicht leichtes Indexieren und Abrufen von Kontext für Sprachmodelle.
-    
-*   **Textzusammenfassung:** Saubere Markdown-Formatierung verbessert die Qualität automatischer Zusammenfassungen.
-    
-*   **Informationsextraktion:** Klare Struktur erleichtert das Auffinden spezifischer Informationen.
-    
-
-## 9. Mitwirkung
-
-Beiträge zur Verbesserung der Genauigkeit, Geschwindigkeit oder Funktionalität sind willkommen. Vorschläge und Pull Requests können im GitHub-Repository eingereicht werden.
-
-## 10. Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz. Details befinden sich in der LICENSE-Datei.
+Das Projekt liefert eine vollständige Demo-Umgebung, um das im Pflichtenheft geforderte Produkt iterativ weiterzuentwickeln.
